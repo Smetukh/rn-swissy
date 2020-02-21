@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>111Open up App.js to start working on your app!</Text>
+      <Text>Home 111Open up App.js to start working on your app!</Text>
       <Button
           title="Go to Profile"
           onPress={() => navigation.navigate('Profile')}

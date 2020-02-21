@@ -1,13 +1,13 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button } from 'react-native';
 
-export default function AuthScreen({ navigation }) {
+export default AuthScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text>+++++ up App.js to start working on your app!</Text>
+      <Text>Auth +++++ up App.js to start working on your app!</Text>
       <Button
-          title="Go to Profile"
-          onPress={() => navigation.navigate('Profile')}
+          title="Go to Home"
+          onPress={() => navigation.navigate('Home')}
         />
     </View>
   );
