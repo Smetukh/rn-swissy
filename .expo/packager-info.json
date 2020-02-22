@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 991,
+  "expoServerNgrokUrl": "https://36-frf.anonymous.rn-swissy.exp.direct",
+  "packagerNgrokUrl": "https://packager.36-frf.anonymous.rn-swissy.exp.direct",
+  "ngrokPid": 1005,
   "webpackServerPort": null
 }

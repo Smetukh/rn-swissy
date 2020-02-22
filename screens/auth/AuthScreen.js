@@ -1,15 +1,47 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button } from 'react-native';
+import Input from '../../components/UI/Input';
 
 export default AuthScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView 
+      behavior='padding'
+      keyboardVerticalOffset={50}
+      style={styles.container}>
       <Text>Auth +++++ up App.js to start working on your app!</Text>
+      <ScrollView>
+        <Input 
+          id="email"
+          label="E-mail"  
+          keyboardType="email-address"  
+          required
+          email
+          autoCapitalize="none"
+          errorMessage="Please enter a valid email address"
+          onValueChange={() => {}}
+          initialValue=""
+        />
+        <Input 
+          id="password"
+          label="password"  
+          keyboardType="default"  
+          secureTextEntry
+          required
+          minLength={8}
+          autoCapitalize="none"
+          errorMessage="Please enter a valid password"
+          onValueChange={() => {}}
+          initialValue=""
+        />
+        <Button title="Login" color="red" onPress={() => {}} />
+        <Button title="Sign up" color="green" onPress={() => {}} />
+      </ScrollView>
+
       <Button
           title="Go to Home"
           onPress={() => navigation.navigate('Home')}
         />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
