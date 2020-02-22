@@ -67,10 +67,11 @@ const Input = props => {
       <Text style={styles.label}>{props.label}</Text>
       <TextInput
         {...props}
-        style={styles.input}
+        style={{...styles.input, ...props.style}}
         value={inputState.value}
         onChangeText={textChangeHandler}
         onBlur={lostFocusHandler}
+        placeholderTextColor="#909090"
       />
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
@@ -86,14 +87,19 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   label: {
-    fontFamily: 'open-sans-bold',
-    marginVertical: 8
+    fontSize: 12,
+    fontFamily: 'rubik',
+    marginBottom: 8,
+    marginTop: 24,
+    color: '#909090'
   },
   input: {
+    fontSize: 12,
     paddingHorizontal: 2,
-    paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
+    // paddingVertical: 5,
+    // borderBottomColor: '#ccc',
+    // borderBottomWidth: 1,
+    paddingLeft: 16,
   },
   errorContainer: {
     marginVertical: 5
