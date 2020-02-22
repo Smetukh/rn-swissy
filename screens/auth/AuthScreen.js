@@ -18,7 +18,8 @@ export default AuthScreen = ({ navigation }) => {
           email
           autoCapitalize="none"
           errorMessage="Please enter a valid email address"
-          onValueChange={() => {}}
+          // onValueChange={() => {}}
+          onInputChange={() => {}}
           initialValue=""
         />
         <Input 
@@ -30,7 +31,8 @@ export default AuthScreen = ({ navigation }) => {
           minLength={8}
           autoCapitalize="none"
           errorMessage="Please enter a valid password"
-          onValueChange={() => {}}
+          // onValueChange={() => {}}
+          onInputChange={() => {}}
           initialValue=""
         />
         <Button title="Login" color="red" onPress={() => {}} />
@@ -48,9 +50,9 @@ export default AuthScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });
 
