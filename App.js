@@ -1,5 +1,7 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
 import MyStack from './navigation/HomeNavigator';
 
 const fetchFonts = () => {
@@ -10,6 +12,18 @@ const fetchFonts = () => {
 };
 
 export default function App() {
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  if (!fontLoaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => {
+          setFontLoaded(true);
+        }}
+      />
+    );
+  }
   return (
     <NavigationContainer>
       <MyStack />
