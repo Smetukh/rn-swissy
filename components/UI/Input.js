@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text'
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const INPUT_BLUR = 'INPUT_BLUR';
@@ -55,6 +56,9 @@ const Input = props => {
     if (props.minLength != null && text.length < props.minLength) {
       isValid = false;
     }
+    if (props.id === 'confirm' && text.localeCompare(props.password)) {
+      isValid = false;
+    }
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
 
@@ -65,6 +69,7 @@ const Input = props => {
   return (
     <View style={styles.formControl}>
       <Text style={styles.label}>{props.label}</Text>
+      {!props.phone && 
       <TextInput
         {...props}
         style={{...styles.input, ...props.style}}
@@ -73,6 +78,27 @@ const Input = props => {
         onBlur={lostFocusHandler}
         placeholderTextColor="#909090"
       />
+      }
+      {props.phone && <TextInputMask
+        type={'cel-phone'}
+        options={
+          {
+            maskType: 'INTERNATIONAL',
+            withDDD: true,
+            dddMask: '(99) '
+          }
+        }
+        
+        {...props}
+        style={{...styles.input, ...props.style}}
+        value={inputState.value}
+        onChangeText={textChangeHandler}
+        onBlur={lostFocusHandler}
+        placeholderTextColor="#909090"
+
+        // dont forget to set the "value" and "onChangeText" props
+        
+      />}
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{props.errorText}</Text>

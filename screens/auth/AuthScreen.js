@@ -1,7 +1,6 @@
 import React, { useReducer, useCallback } from 'react';
-import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button } from 'react-native';
-// import AsyncStorage from '@react-native-community/async-storage';
-import { AsyncStorage } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button, AsyncStorage } from 'react-native';
+
 
 import Input from '../../components/UI/Input';
 
@@ -35,34 +34,39 @@ export default AuthScreen = ({ navigation }) => {
     inputValues: {
       email: '',
       password: '',
+      confirm: '',
       phone: '',
     },
     inputValidities: {
       email: false,
       password: false,
+      confirm: false,
       phone: false,
     },
     formIsValid: false
   });
 
   const signupHandler = async () => {
-    const {email, phone, password} = formState.inputValues;
+    const {email, phone, password, confirm} = formState.inputValues;
     const emailPair = ["email", email]
-    const phonePair = ["phone", phone]
+    const phonePair = ["phone", phone.match(/\d/g).join('')]
     const passwordPair = ["password", password]
+    const confirmPair = ["confirm", confirm]
 
     try {
 
-      await AsyncStorage.multiSet([emailPair, phonePair, passwordPair])
+      await AsyncStorage.multiSet([emailPair, phonePair, passwordPair, confirmPair])
 
       const email1 = await AsyncStorage.getItem('email');
       const phone1 = await AsyncStorage.getItem('phone');
       const password1 = await AsyncStorage.getItem('password');
+      const confirm1 = await AsyncStorage.getItem('confirm');
 
       
       if (email !== null) {
         // We have data!!
         console.log('password!!! = ', password1);
+        console.log('confirm1!!! = ', confirm1);
         console.log('email!!! = ', email1);
         console.log('phone1!!! = ', phone1);
       }
@@ -109,6 +113,7 @@ export default AuthScreen = ({ navigation }) => {
             style={styles.inputContainer}
           />
           <Input 
+            phone
             id="phone"
             label="Phone"  
             keyboardType="decimal-pad"  
@@ -135,6 +140,21 @@ export default AuthScreen = ({ navigation }) => {
             initialValue=""
             placeholder="Enter your password"
             style={styles.inputContainer}
+          />
+          <Input 
+            id="confirm"
+            label="Confirm"  
+            keyboardType="default"  
+            secureTextEntry
+            required
+            // minLength={8}
+            autoCapitalize="none"
+            errorText="Passwords do not match"
+            onInputChange={inputChangeHandler}
+            initialValue=""
+            placeholder="Confirm your password"
+            style={styles.inputContainer}
+            password={formState.inputValues.password}
           />
           <Button title="Sign up" color="red" onPress={signupHandler} />
           <Button title="Sign up" color="green" onPress={signupHandler} />
@@ -166,7 +186,7 @@ const styles = StyleSheet.create({
     width: '90%',
     // maxWidth: 300,
     height: '100%',
-    maxHeight: 400,
+    // maxHeight: 400,
     // padding: 20
   },
   inputContainer: {

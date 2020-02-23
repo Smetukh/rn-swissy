@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19003,
-  "packagerPid": 3161,
-  "expoServerNgrokUrl": "https://ic-dvb.anonymous.rn-swissy.exp.direct",
-  "packagerNgrokUrl": "https://packager.ic-dvb.anonymous.rn-swissy.exp.direct",
-  "ngrokPid": 3188,
+  "packagerPid": 7740,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
