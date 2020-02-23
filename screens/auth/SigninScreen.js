@@ -8,7 +8,6 @@ import SubmitButton from '../../components/UI/SubmitButton';
 import Constants from 'expo-constants';
 import Colors from '../../constants/Colors';
 
-
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
@@ -108,13 +107,6 @@ export default AuthScreen = ({ navigation }) => {
       {/* <Text>Auth +++++ up App.js to start working on your app!</Text> */}
       <View style={styles.authContainer}>
         <ScrollView>
-
-          <View style={styles.logoContainer}>
-
-          </View>
-
-
-
           <Input 
             id="email"
             label="E-mail"  
@@ -200,17 +192,14 @@ export default AuthScreen = ({ navigation }) => {
                   : null
               }
             </View>
-            <View style={styles.bottomText}>
-              <Text style={styles.radioButtonText}>
-                Please confirm you agree to our&nbsp;
-              </Text>
-              <TouchableOpacity onPress={() => Alert.alert('Terms & Conditions')} >
-                <Text style={styles.termsText}>
-                  Terms & Conditions
+            <Text style={styles.radioButtonText}>
+              Please confirm you agree to our &nbsp;
+              {/* <TouchableOpacity onPress={() => navigation.navigate('Home')}> */}
+                <Text style={{color: 'red'}}>
+                   Terms & Conditions
                 </Text>
-            </TouchableOpacity>
-            </View>
-            
+              {/* </TouchableOpacity> */}
+            </Text>
           </TouchableOpacity>
 
           <SubmitButton title='Sign Up' />
@@ -221,9 +210,9 @@ export default AuthScreen = ({ navigation }) => {
                 Already have an account?&nbsp;
               </Text>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
               <Text style={{color: 'red'}}>
-                Sign in
+                Sign in++++++++++++++++++++++
               </Text>
             </TouchableOpacity>
           </View>
@@ -243,11 +232,6 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     alignItems: 'center'
   },
-  logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   authContainer: {
     width: '90%',
     height: '100%',
@@ -258,13 +242,10 @@ const styles = StyleSheet.create({
   radioButtonContainer: {
     flexDirection: 'row',
     fontSize: 12,
-    alignSelf: 'center',
-  },
-    agreeContainer: {
-
+    
   },
   radioButtonText: {
-    // alignSelf: 'center',
+    alignSelf: 'center',
     marginLeft: 8,
   },
   container1: {
@@ -289,11 +270,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginVertical: 10,
-    alignItems: 'center',
-
-  },
-  termsText: {
-    color: 'red',
   }
 });
 

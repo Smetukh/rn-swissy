@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text'
+import { FontAwesome } from '@expo/vector-icons';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const INPUT_BLUR = 'INPUT_BLUR';
@@ -69,36 +70,42 @@ const Input = props => {
   return (
     <View style={styles.formControl}>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
-      {!props.phone && 
-      <TextInput
-        {...props}
-        style={{...styles.input, ...props.style}}
-        value={inputState.value}
-        onChangeText={textChangeHandler}
-        onBlur={lostFocusHandler}
-        placeholderTextColor="#909090"
-      />
-      }
-      {props.phone && <TextInputMask
-        type={'cel-phone'}
-        options={
-          {
-            maskType: 'INTERNATIONAL',
-            withDDD: true,
-            dddMask: '(99) '
-          }
+      <View style={styles.inputContainer}>
+        {!props.phone && 
+      
+        <TextInput
+          {...props}
+          style={{...styles.input, ...props.style}}
+          value={inputState.value}
+          onChangeText={textChangeHandler}
+          onBlur={lostFocusHandler}
+          placeholderTextColor="#909090"
+        />
+        
         }
         
-        {...props}
-        style={{...styles.input, ...props.style}}
-        value={inputState.value}
-        onChangeText={textChangeHandler}
-        onBlur={lostFocusHandler}
-        placeholderTextColor="#909090"
+        {props.phone && <TextInputMask
+          type={'cel-phone'}
+          options={
+            {
+              maskType: 'INTERNATIONAL',
+              withDDD: true,
+              dddMask: '(99) '
+            }
+          }
+          
+          {...props}
+          style={{...styles.input, ...props.style}}
+          value={inputState.value}
+          onChangeText={textChangeHandler}
+          onBlur={lostFocusHandler}
+          placeholderTextColor="#909090"
 
-        // dont forget to set the "value" and "onChangeText" props
-        
-      />}
+          // dont forget to set the "value" and "onChangeText" props
+          
+        />}
+        {props.secureTextEntry && <FontAwesome name="eye-slash" size={ 22 } color="#909090" />}
+      </View>
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{props.errorText}</Text>
@@ -119,11 +126,15 @@ const styles = StyleSheet.create({
     marginTop: 24,
     color: '#909090'
   },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    alignItems: 'center',
+  },
   input: {
     fontSize: 14,
-    paddingHorizontal: 2,
-    
-    paddingLeft: 16,
+    maxWidth: '80%',
   },
   errorContainer: {
     marginVertical: 5
