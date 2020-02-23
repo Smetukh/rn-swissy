@@ -68,7 +68,7 @@ const Input = props => {
 
   return (
     <View style={styles.formControl}>
-      <Text style={styles.label}>{props.label}</Text>
+      {props.label && <Text style={styles.label}>{props.label}</Text>}
       {!props.phone && 
       <TextInput
         {...props}
@@ -120,11 +120,9 @@ const styles = StyleSheet.create({
     color: '#909090'
   },
   input: {
-    fontSize: 12,
+    fontSize: 14,
     paddingHorizontal: 2,
-    // paddingVertical: 5,
-    // borderBottomColor: '#ccc',
-    // borderBottomWidth: 1,
+    
     paddingLeft: 16,
   },
   errorContainer: {
@@ -133,7 +131,7 @@ const styles = StyleSheet.create({
   errorText: {
     fontFamily: 'open-sans',
     color: 'red',
-    fontSize: 13
+    fontSize: 12
   }
 });
 

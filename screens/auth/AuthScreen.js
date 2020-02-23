@@ -1,8 +1,12 @@
-import React, { useReducer, useCallback } from 'react';
-import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button, AsyncStorage } from 'react-native';
+import React, { useReducer, useCallback, useState } from 'react';
+import { SafeAreaView, Alert, ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button, AsyncStorage } from 'react-native';
 
-
+import ReferralLink from '../../components/referral/ReferralLink';
 import Input from '../../components/UI/Input';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import SubmitButton from '../../components/UI/SubmitButton';
+import Constants from 'expo-constants';
+import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 const formReducer = (state, action) => {
@@ -28,7 +32,12 @@ const formReducer = (state, action) => {
   return state;
 };
 
+function Separator() {
+  return <View style={styles.separator} />;
+}
 export default AuthScreen = ({ navigation }) => {
+
+  const [radioButtonState, radioButtonSetState] = useState(false);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -48,10 +57,10 @@ export default AuthScreen = ({ navigation }) => {
 
   const signupHandler = async () => {
     const {email, phone, password, confirm} = formState.inputValues;
-    const emailPair = ["email", email]
-    const phonePair = ["phone", phone.match(/\d/g).join('')]
-    const passwordPair = ["password", password]
-    const confirmPair = ["confirm", confirm]
+    const emailPair = ["email", email];
+    const phonePair = phone ? ["phone", phone.match(/\d/g).join('')] : null;
+    const passwordPair = ["password", password];
+    const confirmPair = ["confirm", confirm];
 
     try {
 
@@ -156,12 +165,57 @@ export default AuthScreen = ({ navigation }) => {
             style={styles.inputContainer}
             password={formState.inputValues.password}
           />
-          <Button title="Sign up" color="red" onPress={signupHandler} />
-          <Button title="Sign up" color="green" onPress={signupHandler} />
-          <Button
-            title="Go to Home"
-            onPress={() => navigation.navigate('Home')}
-          />
+
+          <ReferralLink inputChangeHandler={inputChangeHandler}/>
+
+          <TouchableOpacity 
+            style={styles.radioButtonContainer}
+            onPress={() => radioButtonSetState(!radioButtonState)}>
+            <View style={{
+              height: 16,
+              width: 16,
+              borderRadius: 12,
+              borderWidth: 1.5,
+              borderColor: '#909090',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: 17,
+            }}>
+              {
+                radioButtonState ?
+                  <View style={{
+                    height: 8,
+                    width: 8,
+                    borderRadius: 6,
+                    backgroundColor: '#FA4B41',
+                  }}/>
+                  : null
+              }
+            </View>
+            <Text style={styles.radioButtonText}>
+              Please confirm you agree to our &nbsp;
+              {/* <TouchableOpacity onPress={() => navigation.navigate('Home')}> */}
+                <Text style={{color: 'red'}}>
+                   Terms & Conditions
+                </Text>
+              {/* </TouchableOpacity> */}
+            </Text>
+          </TouchableOpacity>
+
+          <SubmitButton title='Sign Up' />
+        
+          <View style={styles.bottomText}>
+            <View>
+              <Text>
+                Already have an account?&nbsp;
+              </Text>
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <Text style={{color: 'red'}}>
+                Sign in
+              </Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
 
         
@@ -179,20 +233,43 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   authContainer: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignContent: 'center',
-    // flexDirection: 'column',
     width: '90%',
-    // maxWidth: 300,
     height: '100%',
-    // maxHeight: 400,
-    // padding: 20
   },
   inputContainer: {
     height: 44,
-    // color: 'red',
-    // borderColor: 'gray'
   },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    fontSize: 12,
+    
+  },
+  radioButtonText: {
+    alignSelf: 'center',
+    marginLeft: 8,
+  },
+  container1: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+    marginHorizontal: 16,
+  },
+  title: {
+    textAlign: 'center',
+    marginVertical: 8,
+  },
+  fixToText: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  bottomText: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
+  }
 });
 
