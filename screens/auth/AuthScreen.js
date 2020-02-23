@@ -1,5 +1,7 @@
 import React, { useReducer, useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button } from 'react-native';
+// import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 
 import Input from '../../components/UI/Input';
 
@@ -41,15 +43,25 @@ export default AuthScreen = ({ navigation }) => {
     formIsValid: false
   });
 
-  const signupHandler = () => {
-    console.log('formState.inputValues.email, = ', formState.inputValues.email,)
-    console.log('formState.inputValues.password, = ', formState.inputValues.password,)
-    // dispatch(
-    //   authActions.signup(
-    //     formState.inputValues.email,
-    //     formState.inputValues.password
-    //   )
-    // );
+  const signupHandler = async () => {
+
+      try {
+        await AsyncStorage.setItem('email', formState.inputValues.email);
+        await AsyncStorage.setItem('password', formState.inputValues.password);
+
+        const email = await AsyncStorage.getItem('email');
+        const password = await AsyncStorage.getItem('password');
+
+        
+        if (email !== null) {
+          // We have data!!
+          console.log('password!!! = ', password);
+          console.log('email!!! = ', email);
+        }
+      } catch (error) {
+        console.log('error = ', error);
+        // Error saving data
+      }
   };
   
   const inputChangeHandler = useCallback(
