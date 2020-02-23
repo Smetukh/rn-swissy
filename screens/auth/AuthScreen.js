@@ -34,34 +34,42 @@ export default AuthScreen = ({ navigation }) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: '',
-      password: ''
+      password: '',
+      phone: '',
     },
     inputValidities: {
       email: false,
-      password: false
+      password: false,
+      phone: false,
     },
     formIsValid: false
   });
 
   const signupHandler = async () => {
+    const {email, phone, password} = formState.inputValues;
+    const emailPair = ["email", email]
+    const phonePair = ["phone", phone]
+    const passwordPair = ["password", password]
 
-      try {
-        await AsyncStorage.setItem('email', formState.inputValues.email);
-        await AsyncStorage.setItem('password', formState.inputValues.password);
+    try {
 
-        const email = await AsyncStorage.getItem('email');
-        const password = await AsyncStorage.getItem('password');
+      await AsyncStorage.multiSet([emailPair, phonePair, passwordPair])
 
-        
-        if (email !== null) {
-          // We have data!!
-          console.log('password!!! = ', password);
-          console.log('email!!! = ', email);
-        }
-      } catch (error) {
-        console.log('error = ', error);
-        // Error saving data
+      const email1 = await AsyncStorage.getItem('email');
+      const phone1 = await AsyncStorage.getItem('phone');
+      const password1 = await AsyncStorage.getItem('password');
+
+      
+      if (email !== null) {
+        // We have data!!
+        console.log('password!!! = ', password1);
+        console.log('email!!! = ', email1);
+        console.log('phone1!!! = ', phone1);
       }
+    } catch (error) {
+      console.log('error = ', error);
+      // Error saving data
+    }
   };
   
   const inputChangeHandler = useCallback(
@@ -98,6 +106,20 @@ export default AuthScreen = ({ navigation }) => {
             onInputChange={inputChangeHandler}
             initialValue=""
             placeholder="Enter your name"
+            style={styles.inputContainer}
+          />
+          <Input 
+            id="phone"
+            label="Phone"  
+            keyboardType="decimal-pad"  
+            // secureTextEntry
+            required
+            // minLength={8}
+            autoCapitalize="none"
+            errorText="Please enter a valid phone number"
+            onInputChange={inputChangeHandler}
+            initialValue=""
+            placeholder="Enter your phone number"
             style={styles.inputContainer}
           />
           <Input 
