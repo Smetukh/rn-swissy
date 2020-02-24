@@ -42,43 +42,48 @@ export default AuthScreen = ({ navigation }) => {
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      email: '',
+      name: '',
       password: '',
       confirm: '',
-      phone: '',
+      referral: '',
     },
     inputValidities: {
-      email: false,
+      name: false,
       password: false,
       confirm: false,
-      phone: false,
+      referral: false,
     },
     formIsValid: false
   });
 
   const signupHandler = async () => {
-    const {email, phone, password, confirm} = formState.inputValues;
-    const emailPair = ["email", email];
-    const phonePair = phone ? ["phone", phone.match(/\d/g).join('')] : null;
-    const passwordPair = ["password", password];
-    const confirmPair = ["confirm", confirm];
+    if (!formState.formIsValid || !radioButtonState) {
+      return
+    }
+    const {name, phone, password, referral} = formState.inputValues;
 
+    const phoneNumber = phone.match(/\d/g).join('').toString();
+    const inputObject = {name, password, referral}
+
+    console.log('phoneNumber = ', typeof phoneNumber)
+    console.log('inputObject = ', typeof JSON.stringify(inputObject))
     try {
 
-      await AsyncStorage.multiSet([emailPair, phonePair, passwordPair, confirmPair])
 
-      const email1 = await AsyncStorage.getItem('email');
-      const phone1 = await AsyncStorage.getItem('phone');
-      const password1 = await AsyncStorage.getItem('password');
-      const confirm1 = await AsyncStorage.getItem('confirm');
+      await AsyncStorage.setItem(phoneNumber, JSON.stringify(inputObject))
+
+      const name1 = await AsyncStorage.getItem(phoneNumber);
+      // const password1 = await AsyncStorage.getItem('password');
+      // const confirm1 = await AsyncStorage.getItem('confirm');
+      // const referral1 = await AsyncStorage.getItem('referral');
 
       
-      if (email !== null) {
+      if (name1 !== null) {
         // We have data!!
-        console.log('password!!! = ', password1);
-        console.log('confirm1!!! = ', confirm1);
-        console.log('email!!! = ', email1);
-        console.log('phone1!!! = ', phone1);
+        // console.log('password!!! = ', password1);
+        // console.log('confirm1!!! = ', confirm1);
+        console.log('name1!!! = ', JSON.parse(name1).name);
+        // console.log('referral1!!! = ', referral1);
       }
     } catch (error) {
       console.log('error = ', error);
@@ -110,19 +115,21 @@ export default AuthScreen = ({ navigation }) => {
         <ScrollView>
 
           <View style={styles.logoContainer}>
-
+            <Text style={styles.signupText}>
+              Sign up
+            </Text>
           </View>
 
 
 
           <Input 
-            id="email"
-            label="E-mail"  
-            keyboardType="email-address"  
+            id="name"
+            label="Name"  
+            keyboardType="default"  
             required
-            email
-            autoCapitalize="none"
-            errorText="Please enter a valid email address"
+            name
+            autoCapitalize="words"
+            errorText="Please enter a valid Name"
             // onValueChange={() => {}}
             onInputChange={inputChangeHandler}
             initialValue=""
@@ -213,7 +220,7 @@ export default AuthScreen = ({ navigation }) => {
             
           </TouchableOpacity>
 
-          <SubmitButton title='Sign Up' />
+          <SubmitButton title='Sign Up' submitHandler={signupHandler}/>
         
           <View style={styles.bottomText}>
             <View>
@@ -247,6 +254,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 20,
+  },
+  signupText: {
+    fontSize: 32,
+    fontFamily: 'rubik',
+    fontWeight: 'bold',
   },
   authContainer: {
     width: '90%',
@@ -266,24 +279,6 @@ const styles = StyleSheet.create({
   radioButtonText: {
     // alignSelf: 'center',
     marginLeft: 8,
-  },
-  container1: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-    marginHorizontal: 16,
-  },
-  title: {
-    textAlign: 'center',
-    marginVertical: 8,
-  },
-  fixToText: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   bottomText: {
     flexDirection: 'row',

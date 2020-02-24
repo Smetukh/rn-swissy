@@ -41,43 +41,49 @@ export default AuthScreen = ({ navigation }) => {
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      email: '',
+      name: '',
       password: '',
-      confirm: '',
-      phone: '',
     },
     inputValidities: {
-      email: false,
+      name: false,
       password: false,
-      confirm: false,
-      phone: false,
     },
     formIsValid: false
   });
 
-  const signupHandler = async () => {
-    const {email, phone, password, confirm} = formState.inputValues;
-    const emailPair = ["email", email];
-    const phonePair = phone ? ["phone", phone.match(/\d/g).join('')] : null;
-    const passwordPair = ["password", password];
-    const confirmPair = ["confirm", confirm];
+  const signinHandler = async () => {
+    // if (!formState.formIsValid) {
+    //   return
+    // }
+    const {name, phone, password, referral} = formState.inputValues;
 
+    const phoneNumber = phone.match(/\d/g).join('').toString();
+    const inputObject = {name, password, referral}
+
+    console.log('phoneNumber = ', typeof phoneNumber)
+    console.log('inputObject = ', typeof JSON.stringify(inputObject))
     try {
 
-      await AsyncStorage.multiSet([emailPair, phonePair, passwordPair, confirmPair])
 
-      const email1 = await AsyncStorage.getItem('email');
-      const phone1 = await AsyncStorage.getItem('phone');
-      const password1 = await AsyncStorage.getItem('password');
-      const confirm1 = await AsyncStorage.getItem('confirm');
+      // await AsyncStorage.setItem(phoneNumber, JSON.stringify(inputObject))
+
+      const name1 = await AsyncStorage.getItem(phoneNumber);
+      // const password1 = await AsyncStorage.getItem('password');
+      // const confirm1 = await AsyncStorage.getItem('confirm');
+      // const referral1 = await AsyncStorage.getItem('referral');
 
       
-      if (email !== null) {
+      if (name1 !== null) {
+        navigation.navigate('Home', name1)
         // We have data!!
-        console.log('password!!! = ', password1);
-        console.log('confirm1!!! = ', confirm1);
-        console.log('email!!! = ', email1);
-        console.log('phone1!!! = ', phone1);
+        // console.log('password!!! = ', password1);
+        // console.log('confirm1!!! = ', confirm1);
+        console.log('name1!!! = ', name1);
+        // console.log('referral1!!! = ', referral1);
+      } else {
+        formState.inputValidities.name = false;
+        formState.inputValidities.password = false;
+
       }
     } catch (error) {
       console.log('error = ', error);
@@ -107,115 +113,62 @@ export default AuthScreen = ({ navigation }) => {
       {/* <Text>Auth +++++ up App.js to start working on your app!</Text> */}
       <View style={styles.authContainer}>
         <ScrollView>
-          <Input 
-            id="email"
-            label="E-mail"  
-            keyboardType="email-address"  
-            required
-            email
-            autoCapitalize="none"
-            errorText="Please enter a valid email address"
-            // onValueChange={() => {}}
-            onInputChange={inputChangeHandler}
-            initialValue=""
-            placeholder="Enter your name"
-            style={styles.inputContainer}
-          />
-          <Input 
-            phone
-            id="phone"
-            label="Phone"  
-            keyboardType="decimal-pad"  
-            // secureTextEntry
-            required
-            // minLength={8}
-            autoCapitalize="none"
-            errorText="Please enter a valid phone number"
-            onInputChange={inputChangeHandler}
-            initialValue=""
-            placeholder="Enter your phone number"
-            style={styles.inputContainer}
-          />
-          <Input 
-            id="password"
-            label="Password"  
-            keyboardType="default"  
-            secureTextEntry
-            required
-            minLength={8}
-            autoCapitalize="none"
-            errorText="Please enter a valid password"
-            onInputChange={inputChangeHandler}
-            initialValue=""
-            placeholder="Enter your password"
-            style={styles.inputContainer}
-          />
-          <Input 
-            id="confirm"
-            label="Confirm"  
-            keyboardType="default"  
-            secureTextEntry
-            required
-            // minLength={8}
-            autoCapitalize="none"
-            errorText="Passwords do not match"
-            onInputChange={inputChangeHandler}
-            initialValue=""
-            placeholder="Confirm your password"
-            style={styles.inputContainer}
-            password={formState.inputValues.password}
-          />
-
-          <ReferralLink inputChangeHandler={inputChangeHandler}/>
-
-          <TouchableOpacity 
-            style={styles.radioButtonContainer}
-            onPress={() => radioButtonSetState(!radioButtonState)}>
-            <View style={{
-              height: 16,
-              width: 16,
-              borderRadius: 12,
-              borderWidth: 1.5,
-              borderColor: '#909090',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginVertical: 17,
-            }}>
-              {
-                radioButtonState ?
-                  <View style={{
-                    height: 8,
-                    width: 8,
-                    borderRadius: 6,
-                    backgroundColor: '#FA4B41',
-                  }}/>
-                  : null
-              }
-            </View>
-            <Text style={styles.radioButtonText}>
-              Please confirm you agree to our &nbsp;
-              {/* <TouchableOpacity onPress={() => navigation.navigate('Home')}> */}
-                <Text style={{color: 'red'}}>
-                   Terms & Conditions
-                </Text>
-              {/* </TouchableOpacity> */}
-            </Text>
-          </TouchableOpacity>
-
-          <SubmitButton title='Sign Up' />
-        
-          <View style={styles.bottomText}>
+          <View style={styles.containerInner}>
             <View>
-              <Text>
-                Already have an account?&nbsp;
-              </Text>
+              <View style={styles.logoContainer}>
+                <Text style={styles.signinText}>
+                  Sign in
+                </Text>
+              </View>
+              <Input 
+                phone
+                id="phone"
+                label="Phone"  
+                keyboardType="decimal-pad"  
+                // secureTextEntry
+                required
+                // minLength={8}
+                autoCapitalize="none"
+                errorText="Please enter a valid phone number"
+                onInputChange={inputChangeHandler}
+                initialValue=""
+                placeholder="Enter your phone number"
+                style={styles.inputContainer}
+              />
+              <Input 
+                id="password"
+                label="Password"  
+                keyboardType="default"  
+                secureTextEntry
+                required
+                minLength={8}
+                autoCapitalize="none"
+                errorText="Please enter a valid password"
+                onInputChange={inputChangeHandler}
+                initialValue=""
+                placeholder="Enter your password"
+                style={styles.inputContainer}
+              />
+              
+
+              <SubmitButton title='Sign In' submitHandler={signinHandler}/>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-              <Text style={{color: 'red'}}>
-                Sign in++++++++++++++++++++++
-              </Text>
-            </TouchableOpacity>
+            
+          
+            <View style={styles.bottomText}>
+              <View>
+                <Text>
+                  Don't have an account?&nbsp;
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => navigation.navigate('Auth')}>
+                <Text style={{color: 'red'}}>
+                  Sign up
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
+          
         </ScrollView>
 
         
@@ -236,6 +189,22 @@ const styles = StyleSheet.create({
     width: '90%',
     height: '100%',
   },
+  containerInner: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
+  logoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  signinText: {
+    fontSize: 32,
+    fontFamily: 'rubik',
+    fontWeight: 'bold',
+  },
   inputContainer: {
     height: 44,
   },
@@ -247,24 +216,6 @@ const styles = StyleSheet.create({
   radioButtonText: {
     alignSelf: 'center',
     marginLeft: 8,
-  },
-  container1: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-    marginHorizontal: 16,
-  },
-  title: {
-    textAlign: 'center',
-    marginVertical: 8,
-  },
-  fixToText: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   bottomText: {
     flexDirection: 'row',

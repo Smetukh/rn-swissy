@@ -1,14 +1,12 @@
 import React from 'react';
 import { Platform, View, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
-// import { HeaderButton } from 'react-navigation-header-buttons';
-// import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../../constants/Colors';
 
 const SubmitButton = props => {
   return (
     <>
-    <TouchableOpacity >
+    <TouchableOpacity onPress={props.submitHandler}>
       <View style={styles.buttonContainer} >
         <Text style={styles.buttonText} >{props.title}</Text>
       </View>
@@ -39,7 +37,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontFamily: 'rubik',
-    fontWeight: '900',
+    fontWeight: 'bold',
     fontStyle: 'normal',
   }
 })
