@@ -1,9 +1,8 @@
 import React, { useReducer, useCallback, useState } from 'react';
-import { SafeAreaView, Alert, ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button, AsyncStorage } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import Input from '../../components/UI/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SubmitButton from '../../components/UI/SubmitButton';
-import Constants from 'expo-constants';
 import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
@@ -47,34 +46,20 @@ export default SigninScreen = ({ navigation }) => {
   });
 
   const signinHandler = async () => {
-    if (!formState.inputValues.name || !formState.inputValues.password) {
+    const {name, phone, password, referral} = formState.inputValues;
+    if (!name || !password) {
       signinSetState(false);
       return
     }
-    const {name, phone, password, referral} = formState.inputValues;
+    
 
     const phoneNumber = phone.match(/\d/g).join('').toString();
-    const inputObject = {name, password, referral}
 
-    console.log('phoneNumber = ', typeof phoneNumber)
-    console.log('inputObject = ', typeof JSON.stringify(inputObject))
     try {
 
-
-      // await AsyncStorage.setItem(phoneNumber, JSON.stringify(inputObject))
-
       const name1 = await AsyncStorage.getItem(phoneNumber);
-      // const password1 = await AsyncStorage.getItem('password');
-      // const confirm1 = await AsyncStorage.getItem('confirm');
-      // const referral1 = await AsyncStorage.getItem('referral');
-
-      
       if (name1 !== null) {
-        navigation.navigate('Home', name1)
-        // We have data!!
-        // console.log('password!!! = ', password1);
-        // console.log('confirm1!!! = ', confirm1);
-        console.log('name1!!! = ', name1);
+        navigation.navigate('Home', name1);
         signinSetState(true)
       } else {
         signinSetState(false);
@@ -88,7 +73,6 @@ export default SigninScreen = ({ navigation }) => {
   
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
-      console.log('inputValue = ', inputValue);
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
         value: inputValue,
@@ -105,7 +89,6 @@ export default SigninScreen = ({ navigation }) => {
       keyboardVerticalOffset={50}
       style={styles.container}
       >
-      {/* <Text>Auth +++++ up App.js to start working on your app!</Text> */}
       <View style={styles.authContainer}>
         <ScrollView>
           <View style={styles.containerInner}>
@@ -120,9 +103,7 @@ export default SigninScreen = ({ navigation }) => {
                 id="phone"
                 label="Phone"  
                 keyboardType="decimal-pad"  
-                // secureTextEntry
                 required
-                // minLength={8}
                 autoCapitalize="none"
                 errorText="Please enter a valid phone number"
                 onInputChange={inputChangeHandler}
@@ -149,12 +130,9 @@ export default SigninScreen = ({ navigation }) => {
                   Forgot your password?
                 </Text>
               </View>
-              
-
               <SubmitButton title='Sign In' submitHandler={signinHandler}/>
             </View>
-            
-          
+
             <View style={styles.bottomText}>
               <View>
                 <Text>
@@ -170,10 +148,7 @@ export default SigninScreen = ({ navigation }) => {
           </View>
           
         </ScrollView>
-
-        
       </View>
-      
     </KeyboardAvoidingView>
   );
 }
@@ -182,7 +157,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    // justifyContent: 'center',
     alignItems: 'center'
   },
   authContainer: {

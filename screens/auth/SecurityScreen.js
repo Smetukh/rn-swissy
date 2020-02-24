@@ -1,11 +1,9 @@
-import React, { useReducer, useCallback, useState } from 'react';
-import { SafeAreaView, Alert, ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button, AsyncStorage } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View} from 'react-native';
 
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import SubmitButton from '../../components/UI/SubmitButton';
-import Constants from 'expo-constants';
-import Colors from '../../constants/Colors';
+
 
 
 export default SecurityScreen = ({ navigation }) => {
@@ -86,10 +84,7 @@ export default SecurityScreen = ({ navigation }) => {
                 
             </View>
           </View>
-          
-          {/* <Button title="Sign in" onPress={() => navigation.navigate('Signin')}/> */}
         </View>
-        
       </View>
   );
 

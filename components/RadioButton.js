@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, KeyboardAvoidingView, Button, AsyncStorage } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import Colors from '../constants/Colors';
-
-
 
 const RadioButton = props => {
     const [radioButtonState, radioButtonSetState] = useState(false);
@@ -57,7 +55,6 @@ const styles = StyleSheet.create({
     
       },
       radioButtonText: {
-        // alignSelf: 'center',
         marginLeft: 8,
       },
       bottomText: {

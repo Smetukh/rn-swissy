@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useState } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 
 import ReferralLink from '../../components/referral/ReferralLink';
@@ -6,7 +6,6 @@ import RadioButton from '../../components/RadioButton';
 import Input from '../../components/UI/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SubmitButton from '../../components/UI/SubmitButton';
-import Constants from 'expo-constants';
 
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
@@ -72,18 +71,12 @@ export default AuthScreen = ({ navigation }) => {
 
       await AsyncStorage.setItem(phoneNumber, JSON.stringify(inputObject))
 
-      const name1 = await AsyncStorage.getItem(phoneNumber);
-      // const password1 = await AsyncStorage.getItem('password');
-      // const confirm1 = await AsyncStorage.getItem('confirm');
-      // const referral1 = await AsyncStorage.getItem('referral');
-
-      
-      if (name1 !== null) {
+      const savedData = await AsyncStorage.getItem(phoneNumber);
+    
+      if (savedData !== null) {
         // We have data!!
-        // console.log('password!!! = ', password1);
-        // console.log('confirm1!!! = ', confirm1);
-        console.log('name1!!! = ', JSON.parse(name1).name);
-        // console.log('referral1!!! = ', referral1);
+        navigation.navigate('Home', savedData);
+        console.log('SAVED to Async!!! = ', JSON.parse(savedData).name);
       }
     } catch (error) {
       console.log('error = ', error);
@@ -110,17 +103,13 @@ export default AuthScreen = ({ navigation }) => {
       keyboardVerticalOffset={50}
       style={styles.container}
       >
-      {/* <Text>Auth +++++ up App.js to start working on your app!</Text> */}
       <View style={styles.authContainer}>
         <ScrollView>
-
           <View style={styles.logoContainer}>
             <Text style={styles.signupText}>
               Sign up
             </Text>
           </View>
-
-
 
           <Input 
             id="name"
@@ -130,7 +119,6 @@ export default AuthScreen = ({ navigation }) => {
             name
             autoCapitalize="words"
             errorText="Please enter a valid Name"
-            // onValueChange={() => {}}
             onInputChange={inputChangeHandler}
             initialValue=""
             placeholder="Enter your name"
@@ -141,9 +129,8 @@ export default AuthScreen = ({ navigation }) => {
             id="phone"
             label="Phone"  
             keyboardType="decimal-pad"  
-            // secureTextEntry
             required
-            // minLength={8}
+            minLength={16}
             autoCapitalize="none"
             errorText="Please enter a valid phone number"
             onInputChange={inputChangeHandler}
@@ -171,7 +158,6 @@ export default AuthScreen = ({ navigation }) => {
             keyboardType="default"  
             secureTextEntry
             required
-            // minLength={8}
             autoCapitalize="none"
             errorText="Passwords do not match"
             onInputChange={inputChangeHandler}
@@ -183,8 +169,6 @@ export default AuthScreen = ({ navigation }) => {
 
           <ReferralLink inputChangeHandler={inputChangeHandler}/>
           <RadioButton />
-          
-
           <SubmitButton title='Sign Up' submitHandler={signupHandler}/>
         
           <View style={styles.bottomText}>
@@ -200,10 +184,7 @@ export default AuthScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-
-        
       </View>
-      
     </KeyboardAvoidingView>
   );
 }
@@ -212,7 +193,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    // justifyContent: 'center',
     alignItems: 'center'
   },
   logoContainer: {
@@ -233,10 +213,14 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 44,
   },
-  
-
+ 
   termsText: {
     color: 'red',
+  },
+  bottomText: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
   }
 });
 
