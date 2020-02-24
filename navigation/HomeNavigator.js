@@ -6,6 +6,7 @@ import NotificationsScreen from '../screens/home/NotificationsScreen';
 import SettingsScreen from '../screens/home/SettingsScreen';
 import AuthScreen from '../screens/auth/AuthScreen';
 import SigninScreen from '../screens/auth/SigninScreen';
+import SecurityScreen from '../screens/auth/SecurityScreen';
 
 
 const Stack = createStackNavigator();
@@ -13,6 +14,7 @@ const Stack = createStackNavigator();
 function MyStack() {
     return (
       <Stack.Navigator headerMode="none">
+        <Stack.Screen name="Security" component={SecurityScreen} />
         <Stack.Screen name="Auth" component={AuthScreen} />
         <Stack.Screen name="Signin" component={SigninScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />

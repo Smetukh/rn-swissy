@@ -1,7 +1,5 @@
 import React, { useReducer, useCallback, useState } from 'react';
 import { SafeAreaView, Alert, ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button, AsyncStorage } from 'react-native';
-
-import ReferralLink from '../../components/referral/ReferralLink';
 import Input from '../../components/UI/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SubmitButton from '../../components/UI/SubmitButton';
@@ -32,12 +30,9 @@ const formReducer = (state, action) => {
   return state;
 };
 
-function Separator() {
-  return <View style={styles.separator} />;
-}
-export default AuthScreen = ({ navigation }) => {
+export default SigninScreen = ({ navigation }) => {
 
-  const [radioButtonState, radioButtonSetState] = useState(false);
+  const [signinState, signinSetState] = useState(true);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -52,9 +47,10 @@ export default AuthScreen = ({ navigation }) => {
   });
 
   const signinHandler = async () => {
-    // if (!formState.formIsValid) {
-    //   return
-    // }
+    if (!formState.inputValues.name || !formState.inputValues.password) {
+      signinSetState(false);
+      return
+    }
     const {name, phone, password, referral} = formState.inputValues;
 
     const phoneNumber = phone.match(/\d/g).join('').toString();
@@ -79,10 +75,9 @@ export default AuthScreen = ({ navigation }) => {
         // console.log('password!!! = ', password1);
         // console.log('confirm1!!! = ', confirm1);
         console.log('name1!!! = ', name1);
-        // console.log('referral1!!! = ', referral1);
+        signinSetState(true)
       } else {
-        formState.inputValidities.name = false;
-        formState.inputValidities.password = false;
+        signinSetState(false);
 
       }
     } catch (error) {
@@ -149,6 +144,11 @@ export default AuthScreen = ({ navigation }) => {
                 placeholder="Enter your password"
                 style={styles.inputContainer}
               />
+              <View style={styles.forgotPasswordText}>
+                <Text style={{color: signinState ? "#333333" : Colors.primary}}>
+                  Forgot your password?
+                </Text>
+              </View>
               
 
               <SubmitButton title='Sign In' submitHandler={signinHandler}/>
@@ -208,14 +208,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 44,
   },
-  radioButtonContainer: {
-    flexDirection: 'row',
-    fontSize: 12,
-    
-  },
-  radioButtonText: {
-    alignSelf: 'center',
-    marginLeft: 8,
+  forgotPasswordText: {
+    alignContent: 'flex-end',
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end'
+
   },
   bottomText: {
     flexDirection: 'row',

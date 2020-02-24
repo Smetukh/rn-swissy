@@ -202,7 +202,7 @@ export default AuthScreen = ({ navigation }) => {
                     height: 8,
                     width: 8,
                     borderRadius: 6,
-                    backgroundColor: '#FA4B41',
+                    backgroundColor: Colors.primary,
                   }}/>
                   : null
               }
