@@ -1,12 +1,12 @@
 import React, { useReducer, useCallback, useState } from 'react';
-import { SafeAreaView, Alert, ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, Button, AsyncStorage } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 
 import ReferralLink from '../../components/referral/ReferralLink';
+import RadioButton from '../../components/RadioButton';
 import Input from '../../components/UI/Input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SubmitButton from '../../components/UI/SubmitButton';
 import Constants from 'expo-constants';
-import Colors from '../../constants/Colors';
 
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
@@ -38,7 +38,7 @@ function Separator() {
 }
 export default AuthScreen = ({ navigation }) => {
 
-  const [radioButtonState, radioButtonSetState] = useState(false);
+  
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -57,7 +57,7 @@ export default AuthScreen = ({ navigation }) => {
   });
 
   const signupHandler = async () => {
-    if (!formState.formIsValid || !radioButtonState) {
+    if (!formState.formIsValid) {
       return
     }
     const {name, phone, password, referral} = formState.inputValues;
@@ -182,43 +182,8 @@ export default AuthScreen = ({ navigation }) => {
           />
 
           <ReferralLink inputChangeHandler={inputChangeHandler}/>
-
-          <TouchableOpacity 
-            style={styles.radioButtonContainer}
-            onPress={() => radioButtonSetState(!radioButtonState)}>
-            <View style={{
-              height: 16,
-              width: 16,
-              borderRadius: 12,
-              borderWidth: 1.5,
-              borderColor: '#909090',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginVertical: 17,
-            }}>
-              {
-                radioButtonState ?
-                  <View style={{
-                    height: 8,
-                    width: 8,
-                    borderRadius: 6,
-                    backgroundColor: Colors.primary,
-                  }}/>
-                  : null
-              }
-            </View>
-            <View style={styles.bottomText}>
-              <Text style={styles.radioButtonText}>
-                Please confirm you agree to our&nbsp;
-              </Text>
-              <TouchableOpacity onPress={() => Alert.alert('Terms & Conditions')} >
-                <Text style={styles.termsText}>
-                  Terms & Conditions
-                </Text>
-            </TouchableOpacity>
-            </View>
-            
-          </TouchableOpacity>
+          <RadioButton />
+          
 
           <SubmitButton title='Sign Up' submitHandler={signupHandler}/>
         
@@ -268,25 +233,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 44,
   },
-  radioButtonContainer: {
-    flexDirection: 'row',
-    fontSize: 12,
-    alignSelf: 'center',
-  },
-    agreeContainer: {
+  
 
-  },
-  radioButtonText: {
-    // alignSelf: 'center',
-    marginLeft: 8,
-  },
-  bottomText: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 10,
-    alignItems: 'center',
-
-  },
   termsText: {
     color: 'red',
   }
