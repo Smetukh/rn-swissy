@@ -1,5 +1,8 @@
 rn-swissy
 
+Video demostration of the demo
+https://www.youtube.com/watch?v=WO1IhndwKX8&feature=youtu.be
+
 To start this project:
 - npm install expo-cli -- global
 - clone https://github.com/Smetukh/rn-swissy.git
